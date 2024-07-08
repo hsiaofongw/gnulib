@@ -38,6 +38,9 @@
 # define SWAP(n) bswap_32 (n)
 #endif
 
+
+#include "io_adapter.h"
+
 #if ! HAVE_OPENSSL_SHA256
 
 /* This array contains the bytes used to pad the buffer to the next
@@ -334,6 +337,7 @@ sha256_process_block (const void *buffer, size_t len, struct sha256_ctx *ctx)
                                      D += t1;  H = t0 + t1; \
                                } while(0)
 
+  uint32_t num_iters = 0;
   while (words < endp)
     {
       uint32_t tm;
@@ -419,6 +423,8 @@ sha256_process_block (const void *buffer, size_t len, struct sha256_ctx *ctx)
       f = ctx->state[5] += f;
       g = ctx->state[6] += g;
       h = ctx->state[7] += h;
+
+      on_hash_process_block_iterate(num_iters++, ctx, DIGEST_SHA256);
     }
 }
 

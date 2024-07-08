@@ -27,6 +27,8 @@
 #endif
 #include "md5.h"
 
+#include "io_adapter.h"
+
 #include <stdint.h>
 #include <string.h>
 #include <sys/types.h>
@@ -244,6 +246,7 @@ md5_process_block (const void *buffer, size_t len, struct md5_ctx *ctx)
   ctx->total[0] += lolen;
   ctx->total[1] += (len >> 31 >> 1) + (ctx->total[0] < lolen);
 
+  uint32_t num_iters = 0;
   /* Process all bytes in the buffer with 64 bytes in each round of
      the loop.  */
   while (words < endp)
@@ -375,6 +378,8 @@ md5_process_block (const void *buffer, size_t len, struct md5_ctx *ctx)
       B += B_save;
       C += C_save;
       D += D_save;
+
+      on_hash_process_block_iterate(num_iters++, ctx, DIGEST_MD5);
     }
 
   /* Put checksum in context given as argument.  */
