@@ -68,6 +68,8 @@ struct sha256_ctx
   uint32_t total[2];
   size_t buflen;       /* ≥ 0, ≤ 128 */
   uint32_t buffer[32]; /* 128 bytes; the first buflen bytes are in use */
+  void (*notify_progress)(uint32_t, uint32_t, void *, void *);
+  CksumIOCtx *io_ctx;
 };
 
 /* Initialize structure containing state of computation. */

@@ -13,8 +13,16 @@ enum DigestId {
   DIGEST_SM3 = 6,
 };
 
-// called within hash iterate function.
-void on_hash_process_block_iterate(uint32_t iter_idx, void *ctx,
-                                   uint32_t alg_id);
+typedef struct {
+  char *msg_buf;
+  size_t msg_len;
+  char *result_buf;
+  size_t result_len;
+  int alg_id;
+  void (*notify_progress)(uint32_t, uint32_t, void *, void *);
+} CksumIOCtx;
+
+void *sha256_calc(CksumIOCtx *io_ctx);
+void *sha224_calc(CksumIOCtx *io_ctx);
 
 #endif

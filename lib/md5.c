@@ -378,8 +378,6 @@ md5_process_block (const void *buffer, size_t len, struct md5_ctx *ctx)
       B += B_save;
       C += C_save;
       D += D_save;
-
-      on_hash_process_block_iterate(num_iters++, ctx, DIGEST_MD5);
     }
 
   /* Put checksum in context given as argument.  */
