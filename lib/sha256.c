@@ -329,8 +329,8 @@ void sha256_process_block(const void *buffer, size_t len,
     H = t0 + t1;                           \
   } while (0)
 
-  uint32_t words0 = words;
-  uint32_t total_sub_chunks = endp - words;
+  uint32_t words0 = (uint32_t)words;
+  uint32_t total_sub_chunks = (uint32_t)endp - words0;
   while (words < endp) {
     uint32_t tm;
     uint32_t t0, t1;
@@ -415,7 +415,8 @@ void sha256_process_block(const void *buffer, size_t len,
     g = ctx->state[6] += g;
     h = ctx->state[7] += h;
 
-    ctx->notify_progress(words - words0, total_sub_chunks, ctx, ctx->io_ctx);
+    ctx->notify_progress((uint32_t)words - words0, total_sub_chunks, ctx,
+                         ctx->io_ctx);
   }
 }
 

@@ -20,6 +20,9 @@ typedef struct {
   size_t result_len;
   int alg_id;
   void (*notify_progress)(uint32_t, uint32_t, void *, void *);
+  void (*report_progress_to_upstream)(uint32_t sub_chunks_did,
+                                      uint32_t total_sub_chunks, void *io_ctx,
+                                      char *result_buf, size_t result_len);
 } CksumIOCtx;
 
 void *sha256_calc(CksumIOCtx *io_ctx);
